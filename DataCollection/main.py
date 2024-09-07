@@ -1,26 +1,17 @@
-import requests
-from bs4 import BeautifulSoup 
+import os 
 
-def login_to_garmin(username, password):
-    loginUrl = "https://connect.garmin.com/signin"
-    session = requests.Session()
+from session import login_to_garmin 
+from save_as_csv import save_as_csv 
+from fetchTest import fetch_act 
 
-    response = session.get(loginUrl)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    csrf_token = soup.find('input', {'name': 'csrfToken'})['value']
+def main(): 
+    userName = os.getenv("username") 
+    password = os.getenv("password")
 
-    login_data = {
-        'username' : username, 
-        'password' : password, 
-        'csrfToken' : csrf_token 
-    } 
+    sess = login_to_garmin(userName, password) 
+    activ = fetch_act(sess)
 
-    session.post(loginUrl, data=login_data)
+    save_as_csv(activ)
 
-    return session 
-
-
-
-    
-
+if __name__ == '__main__': 
+    main()
