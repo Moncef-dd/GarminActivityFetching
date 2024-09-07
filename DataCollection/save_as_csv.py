@@ -22,14 +22,3 @@ def save_as_csv(activities, filename='testDataset.csv'):
 
             writer.writerow(row)
 
-
-
-# running the script
-username = os.getenv("username")
-password = os.getenv("password") 
-
-session = login_to_garmin(username, password) 
-act = fetchTest(session) 
-
-# save to csv 
-save_as_csv(act)
